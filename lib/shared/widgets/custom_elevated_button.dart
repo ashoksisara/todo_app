@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../shared/constants/app_color.dart';
-import '../../../utils/ui_helper.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color? color;
+  final Color? textColor;
   final String btnText;
   final double? width;
   final double? height;
+  final Widget? prefixIcon;
 
   const CustomElevatedButton(
       {Key? key,
       required this.onPressed,
-      this.color = AppColor.accent,
+      this.color = AppColor.primary,
       this.width,
+      this.textColor,
       this.height,
+      this.prefixIcon,
       required this.btnText})
       : super(key: key);
 
@@ -23,13 +25,25 @@ class CustomElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width ?? double.infinity,
-      height: height ?? 56.h,
+      height: height,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: color, elevation: 0),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: color,
+        ),
         onPressed: onPressed,
-        child: Text(
-          btnText,
-          style: UITextStyle.buttonTextStyle(color: AppColor.textWhite),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (prefixIcon != null) const SizedBox(width: 20),
+            prefixIcon ?? const SizedBox.shrink(),
+            Expanded(
+              child : Text(
+                btnText,
+                style: TextStyle(color: textColor,fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         ),
       ),
     );

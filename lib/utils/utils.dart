@@ -1,5 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../shared/constants/app_string.dart';
 import '../shared/widgets/progress_dialog.dart';
 import 'logger.dart';
@@ -18,50 +18,6 @@ class Utils {
   }
 
 
-  static Map<String, String> convertMapToString(dynamic map) {
-
-    Map<dynamic, dynamic> mapDynamic;
-    if (map is String) {
-      var obj = json.decode(map);
-      mapDynamic = obj;
-    } else if (map is Map<dynamic, dynamic>) {
-      mapDynamic = map;
-    } else {
-      return <String, String>{};
-    }
-
-    Map<String, String> convertedMap = <String, String>{};
-    for (dynamic key in mapDynamic.keys) {
-      if ((key is String) && (mapDynamic[key] is String)) {
-        convertedMap[key] = mapDynamic[key];
-      }
-    }
-    return convertedMap;
-  }
-
-  /// Used for update page list
-  bool isApiCallRequired = false;
-
-  //region Convert Map
-  static Map<String, dynamic> convertMap(dynamic map) {
-    Map<dynamic, dynamic> mapDynamic;
-    if (map is String) {
-      var obj = json.decode(map);
-      mapDynamic = obj;
-    } else if (map is Map<dynamic, dynamic>) {
-      mapDynamic = map;
-    } else {
-      return <String, dynamic>{};
-    }
-
-    Map<String, dynamic> convertedMap = <String, dynamic>{};
-    for (dynamic key in mapDynamic.keys) {
-      if (key is String) {
-        convertedMap[key] = mapDynamic[key];
-      }
-    }
-    return convertedMap;
-  }
 
   static void showSnackBar(GlobalKey<ScaffoldState> key, String msg){
 
@@ -97,8 +53,32 @@ class Utils {
 
 
 
+  static String dateToString(DateTime date, {String? format}) {
+    DateFormat formatter = DateFormat(format);
+    try {
+      return formatter.format(date);
+    } catch (e) {
+      debugPrint('Error formatting date: $e');
+    }
+    return '';
+  }
+
+  static String dateUTCtoLocal(DateTime date, {String? format}) {
+    DateFormat formatter = DateFormat(format);
+    try {
+      return formatter.format(date.toLocal());
+    } catch (e) {
+      debugPrint('Error formatting date: $e');
+    }
+    return '';
+  }
 
 
 }
 
+class AppDateFormat{
+  static String shortMonthFormat = "MMM dd, yyyy";
+  static String dayMonthFormat = "MMM dd";
+  static String fullDateTimeFormat = "MMM d yyyy, h:mm aa";
+}
 
